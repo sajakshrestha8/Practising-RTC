@@ -1,75 +1,29 @@
-# Short Polling
+# Real-Time Communication (RTC)
 
-Short polling is a technique used to achieve **near real-time communication** between a client and a server.
+Real-Time Communication (RTC) enables clients and servers to exchange data with minimal delay, allowing applications to stay synchronized without requiring users to manually refresh the page.
 
-It is useful when the server has data that changes independently of the client's actions, but the client still needs to keep its UI updated.
+## Topics to Learn
 
-Instead of the server pushing updates, the **client repeatedly sends requests at fixed intervals**, essentially asking:
+- **Short Polling**
 
-> "Is my data ready?"
+  - The client periodically sends requests to the server at fixed intervals to check for updates.
 
-The server responds to each request with the latest available data, regardless of whether the data has changed.
+- **Long Polling**
 
----
+  - The client sends a request, and the server keeps the connection open until new data is available or a timeout occurs.
 
-## How Short Polling Works
+- **Server-Sent Events (SSE)**
 
-1. The client sends a request to the server.
-2. The server responds with the current data.
-3. The client waits for a fixed interval (for example, every 2 or 5 seconds).
-4. The client sends another request.
-5. The process repeats continuously.
+  - The server maintains a one-way connection to continuously push updates to the client over HTTP.
 
----
+- **WebSockets**
+  - Establishes a persistent, full-duplex connection, allowing both the client and server to send data to each other at any time.
 
-## Architecture
+## Goal
 
-<img width="985" height="787" alt="image" src="https://github.com/user-attachments/assets/34872442-32f0-43a9-aa7d-fec5d2d86f97" />
+Understand:
 
----
-
-## Flow
-
-```text
-Client                     Server
-   |                          |
-   |---- GET /data ---------> |
-   |<----- Latest Data -------|
-   |                          |
-   | (wait 2 seconds)         |
-   |---- GET /data ---------> |
-   |<----- Latest Data -------|
-   |                          |
-   | (repeat...)              |
-```
-
----
-
-## Use Cases
-
-Short polling is commonly used for:
-
-- News feeds
-- Admin dashboards
-- Analytics dashboards
-
----
-
-## When Should You Use Short Polling?
-
-Short polling is a good choice when:
-
-- Data changes frequently.
-- Near real-time updates are sufficient.
-- A slight delay (based on the polling interval) is acceptable.
-
----
-
-## Example Scenario
-
-Imagine an admin dashboard displaying the number of active users.
-
-- The client sends a request every **3 seconds**.
-- The server returns the latest active user count.
-- Even if the count hasn't changed, the server still responds.
-- The dashboard stays updated without requiring the user to refresh the page.
+- How each communication method works.
+- Their advantages and disadvantages.
+- When to use each approach.
+- The trade-offs in terms of latency, scalability, and server resource usage.
