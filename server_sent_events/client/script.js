@@ -1,16 +1,15 @@
-console.log("Is js running properly??");
+const eventSource = new EventSource("http://localhost:8080/startBuild");
+const logMessage = document.getElementById("logMessage");
 
-async function getData() {
-  const URL = "http://localhost:8080/startBuild";
+eventSource.onmessage = (event) => {
+  const breakline = document.createElement("br");
+  logMessage.append(event.data, breakline);
 
-  try {
-    const response = await fetch(URL);
-    const data = await response.json();
+  document.body.append(logMessage);
+};
 
-    console.log(data);
-  } catch (error) {
-    console.log(error);
-  }
+console.log(eventSource.readyState);
+
+if (eventSource.readyState === EventSource.CLOSED) {
+  eventSource.close();
 }
-
-getData();

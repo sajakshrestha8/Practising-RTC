@@ -10,23 +10,26 @@ app.use(cors());
 
 app.get("/", (_request, response) => response.json("Hello!!"));
 
+let index = 0;
+
 app.get("/startBuild", (_request, response) => {
   response.setHeader("Content-Type", "text/event-stream");
 
-  let index = 0;
-
   const sendNextLog = () => {
-    if (index >= buildLogs.length) {
-      response.end();
+    if (index > buildLogs.length - 1) {
+      response.status(204).end();
+      return;
     }
+
+    const log = buildLogs[index];
 
     const responseMessage = buildLogs[index].message;
 
-    response.write(`data: ${responseMessage}\n`);
+    response.write(`data: ${responseMessage}\n\n`);
 
     index += 1;
 
-    setTimeout(sendNextLog, buildLogs[index].delay);
+    setTimeout(sendNextLog, log.delay);
   };
 
   sendNextLog();
